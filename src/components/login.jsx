@@ -1,0 +1,77 @@
+import React from 'react';
+import { FaGoogle, FaXTwitter } from "react-icons/fa6";
+import { FaArrowRight } from "react-icons/fa";
+import { Link } from 'react-router-dom';
+import { useForm } from "react-hook-form"
+
+const Login = () => {
+  const {
+      register,
+      handleSubmit,
+      reset,
+      watch,
+      formState: { errors , isSubmitting},
+    } = useForm()
+    const [loading, setLoading] = React.useState(false);
+    const onSubmit = async (data) => {
+      setLoading(true);
+    try {
+      await new Promise((res) => setTimeout(res, 1000));
+      console.log("Form submitted:", data);
+      reset();
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
+  }
+  return (
+    <div className="w-screen h-screen bg-black flex justify-center items-center">
+      <div className="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-[30px] w-[90%] max-w-md shadow-2xl">
+        <h2 className="text-3xl font-semibold text-white mb-2 text-center">Welcome back!</h2>
+        <p className="text-gray-300 text-center mb-6">Sign in to your account</p>
+
+        <form className="flex flex-col items-center justify-center gap-y-5 px-4 py-2 mb-4" onSubmit={handleSubmit(onSubmit)}>
+          <input
+            {...register("email", { required: {value: true, message: 'This field is required!'}})}
+            type="email"
+            placeholder="Enter your email"
+            className="bg-white/10 w-[90%] px-4 py-2 rounded-full text-white placeholder-gray-400 outline-none"
+          />
+          {errors.email && <span className="text-red-400 text-xs">{errors.email.message}</span>}
+          <input 
+            {...register("pass", { required: {value: true, message: 'This field is required!'}})}
+            type="password" 
+            placeholder="Enter your password" 
+            className="bg-white/10 w-[90%] px-4 py-2 rounded-full text-white placeholder-gray-400 outline-none"
+            />
+            {errors.pass && <span className="text-red-400 text-xs">{errors.pass.message}</span>}
+          <button disabled={isSubmitting} className={isSubmitting?'bg-white/50 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none':'bg-white/90 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none'}>{isSubmitting ? 'Signing..' : 'Sign in'}</button>
+        </form>
+
+        <div className="flex items-center my-4">
+          <hr className="flex-1 border-gray-600" />
+          <span className="px-2 text-gray-400">OR</span>
+          <hr className="flex-1 border-gray-600" />
+        </div>
+
+        <button className="w-full flex items-center gap-3 justify-center bg-white/10 border border-white/20 text-white rounded-full py-2 mb-3 hover:bg-white/20 transition">
+          <FaGoogle />
+          Continue with Google
+        </button>
+
+        <button className="w-full flex items-center gap-3 justify-center bg-white/10 border border-white/20 text-white rounded-full py-2 hover:bg-white/20 transition">
+          <FaXTwitter />
+          Continue with X
+        </button>
+
+        <p className="text-gray-400 text-sm text-center mt-6">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-cyan-400 hover:underline">Sign up</Link>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
