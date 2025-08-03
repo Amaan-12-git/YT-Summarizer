@@ -46,7 +46,7 @@ const Login = () => {
             className="bg-white/10 w-[90%] px-4 py-2 rounded-full text-white placeholder-gray-400 outline-none"
             />
             {errors.pass && <span className="text-red-400 text-xs">{errors.pass.message}</span>}
-          <button disabled={isSubmitting} className={isSubmitting?'bg-white/50 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none':'bg-white/90 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none'}>{isSubmitting ? 'Signing..' : 'Sign in'}</button>
+          <button disabled={isSubmitting} className={isSubmitting?'bg-white/50 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none':'bg-white/90 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none'}>{isSubmitting ? 'Signing...' : 'Sign in'}</button>
         </form>
 
         <div className="flex items-center my-4">

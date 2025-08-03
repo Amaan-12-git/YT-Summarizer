@@ -5,6 +5,7 @@ import './index.css';
 import App from './App.jsx';
 import Signup from './components/signup.jsx';
 import Login from './components/login.jsx';
+import Dashboard from './components/Dashboard.jsx';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
   },
   { path: '/signup', element: <Signup/> },
   { path: '/login', element: <Login />},
+  { path: '/dashboard', element: <Dashboard /> }
 ]);
 
 createRoot(document.getElementById('root')).render(
