@@ -2,11 +2,36 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
   const onChange = () => {
     setNav(!nav);
+  };
+  useEffect(() => {
+    fetch("http://localhost:3000/api/check-auth", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Auth check response:", data);
+        setLoggedIn(data.loggedIn);
+      })
+      .catch((err) => console.error("Auth check failed:", err));
+  }, []);
+  const handleLogout = () => {
+    fetch("http://localhost:3000/logout/", {
+      method: "POST",
+      credentials: "include",
+    }).then(() => {
+      setLoggedIn(false);
+      navigate("/");
+    });
   };
   return (
     <nav className="bg-black p-4">
@@ -22,12 +47,21 @@ const Navbar = () => {
           <Link to="/contact" className="text-gray-300 hover:text-white">
             Contact
           </Link>
-          <Link to="/signup">
-            {" "}
-            <button className="ml-4 cursor-pointer px-6 py-2 text-gray-300 font-semibold opacity-75 rounded-md border border-white-900 bg-gradient-to-r from-bg-[oklch(0.45_0.02_266.4)] to-bg-[#424040] backdrop-blur-sm shadow-inner hover:text-white hover:backdrop-opacity-100 transition duration-300">
-              Sign Up
+          {loggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="ml-4 cursor-pointer px-6 py-2 text-gray-300 font-semibold opacity-75 rounded-md border border-white-900 bg-gradient-to-r from-bg-[oklch(0.45_0.02_266.4)] to-bg-[#424040] backdrop-blur-sm shadow-inner hover:text-white hover:backdrop-opacity-100 transition duration-300"
+            >
+              Log out
             </button>
-          </Link>
+          ) : (
+            <Link to="/signup">
+              {" "}
+              <button className="ml-4 cursor-pointer px-6 py-2 text-gray-300 font-semibold opacity-75 rounded-md border border-white-900 bg-gradient-to-r from-bg-[oklch(0.45_0.02_266.4)] to-bg-[#424040] backdrop-blur-sm shadow-inner hover:text-white hover:backdrop-opacity-100 transition duration-300">
+                Sign Up
+              </button>
+            </Link>
+          )}
         </div>
         <div
           className="z-50 cursor-pointer text-gray-300 md:hidden hover:text-white"
@@ -55,11 +89,20 @@ const Navbar = () => {
           <Link to="/contact" className="text-gray-300 hover:text-white">
             Contact
           </Link>
-          <Link to="/signup">
-            <button className="w-[110px] cursor-pointer px-6 py-2 text-gray-300 font-semibold opacity-75 rounded-md border border-white-900 bg-gradient-to-r from-bg-[oklch(0.45_0.02_266.4)] to-bg-[#424040] backdrop-blur-sm shadow-inner hover:text-white hover:backdrop-opacity-100 transition duration-300">
-              Sign Up
+          {loggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="w-[110px] cursor-pointer px-6 py-2 text-gray-300 font-semibold opacity-75 rounded-md border border-white-900 bg-gradient-to-r from-bg-[oklch(0.45_0.02_266.4)] to-bg-[#424040] backdrop-blur-sm shadow-inner hover:text-white hover:backdrop-opacity-100 transition duration-300"
+            >
+              Log out
             </button>
-          </Link>
+          ) : (
+            <Link to="/signup">
+              <button className="w-[110px] cursor-pointer px-6 py-2 text-gray-300 font-semibold opacity-75 rounded-md border border-white-900 bg-gradient-to-r from-bg-[oklch(0.45_0.02_266.4)] to-bg-[#424040] backdrop-blur-sm shadow-inner hover:text-white hover:backdrop-opacity-100 transition duration-300">
+                Sign Up
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </nav>

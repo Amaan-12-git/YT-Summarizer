@@ -1,52 +1,96 @@
-import React from 'react';
+import React from "react";
 import { FaGoogle, FaXTwitter } from "react-icons/fa6";
 import { FaArrowRight } from "react-icons/fa";
-import { Link } from 'react-router-dom';
-import { useForm } from "react-hook-form"
+import { Link } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
   const {
-      register,
-      handleSubmit,
-      reset,
-      watch,
-      formState: { errors , isSubmitting},
-    } = useForm()
-    const [loading, setLoading] = React.useState(false);
-    const onSubmit = async (data) => {
-      setLoading(true);
+    register,
+    handleSubmit,
+    reset,
+    watch,
+    formState: { errors, isSubmitting },
+  } = useForm();
+  const [loading, setLoading] = React.useState(false);
+  const [err, setErr] = React.useState(false);
+  const onSubmit = async (data) => {
+    setLoading(true);
     try {
-      await new Promise((res) => setTimeout(res, 1000));
-      console.log("Form submitted:", data);
-      reset();
+      const res = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        credentials: "include",
+      });
+
+      if (!res.ok) throw new Error("Failed to login");
+      setErr(false);
+
+      const result = await res.json();
+      console.log("Login successful:", result);
+
+      navigate("/dashboard");
     } catch (error) {
+      setErr(true);
       console.error("Error:", error);
     } finally {
+      reset();
       setLoading(false);
     }
-  }
+  };
   return (
     <div className="w-screen h-screen bg-black flex justify-center items-center">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-[30px] w-[90%] max-w-md shadow-2xl">
-        <h2 className="text-3xl font-semibold text-white mb-2 text-center">Welcome back!</h2>
-        <p className="text-gray-300 text-center mb-6">Sign in to your account</p>
-
-        <form className="flex flex-col items-center justify-center gap-y-5 px-4 py-2 mb-4" onSubmit={handleSubmit(onSubmit)}>
+        <h2 className="text-3xl font-semibold text-white mb-2 text-center">
+          Welcome back!
+        </h2>
+        <p className="text-gray-300 text-center mb-6">
+          Sign in to your account
+        </p>
+        {err && (
+          <p className="text-red-400 text-center text-xs">
+            Invalid email or password
+          </p>
+        )}
+        <form
+          className="flex flex-col items-center justify-center gap-y-5 px-4 py-2 mb-4"
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <input
-            {...register("email", { required: {value: true, message: 'This field is required!'}})}
+            {...register("email", {
+              required: { value: true, message: "This field is required!" },
+            })}
             type="email"
             placeholder="Enter your email"
             className="bg-white/10 w-[90%] px-4 py-2 rounded-full text-white placeholder-gray-400 outline-none"
           />
-          {errors.email && <span className="text-red-400 text-xs">{errors.email.message}</span>}
-          <input 
-            {...register("pass", { required: {value: true, message: 'This field is required!'}})}
-            type="password" 
-            placeholder="Enter your password" 
+          {errors.email && (
+            <span className="text-red-400 text-xs">{errors.email.message}</span>
+          )}
+          <input
+            {...register("pass", {
+              required: { value: true, message: "This field is required!" },
+            })}
+            type="password"
+            placeholder="Enter your password"
             className="bg-white/10 w-[90%] px-4 py-2 rounded-full text-white placeholder-gray-400 outline-none"
-            />
-            {errors.pass && <span className="text-red-400 text-xs">{errors.pass.message}</span>}
-          <button disabled={isSubmitting} className={isSubmitting?'bg-white/50 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none':'bg-white/90 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none'}>{isSubmitting ? 'Signing...' : 'Sign in'}</button>
+          />
+          {errors.pass && (
+            <span className="text-red-400 text-xs">{errors.pass.message}</span>
+          )}
+          <button
+            disabled={isSubmitting}
+            className={
+              isSubmitting
+                ? "bg-white/50 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none"
+                : "bg-white/90 w-[90%] px-4 py-2 rounded-full font-bold text-gray-900 placeholder-gray-400 outline-none"
+            }
+          >
+            {isSubmitting ? "Signing..." : "Sign in"}
+          </button>
         </form>
 
         <div className="flex items-center my-4">
@@ -67,7 +111,9 @@ const Login = () => {
 
         <p className="text-gray-400 text-sm text-center mt-6">
           Don't have an account?{" "}
-          <Link to="/signup" className="text-cyan-400 hover:underline">Sign up</Link>
+          <Link to="/signup" className="text-cyan-400 hover:underline">
+            Sign up
+          </Link>
         </p>
       </div>
     </div>
