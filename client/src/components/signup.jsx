@@ -4,6 +4,7 @@ import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -40,6 +41,40 @@ const Signup = () => {
       setLoading(false);
     }
   };
+
+  const responseGoogle = async (authResult) => {
+    try {
+      if (authResult && authResult.code) {
+        const code = authResult.code;
+
+        const res = await fetch(
+          `http://localhost:3000/auth/google?code=${code}`,
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          }
+        );
+
+        if (!res.ok) throw new Error("Google authentication failed");
+        const result = await res.json();
+        navigate("/dashboard");
+      } else {
+        console.error("No auth code received:", authResult);
+      }
+    } catch (err) {
+      console.error("Google auth error:", err);
+    }
+  };
+
+  const googleLogin = useGoogleLogin({
+    onSuccess: responseGoogle,
+    onError: (err) => {
+      console.error("Google login failed:", err);
+    },
+    flow: "auth-code",
+  });
+
   return (
     <div className="w-screen h-screen bg-black flex justify-center items-center">
       <div className="bg-white/10 backdrop-blur-md border border-white/20 md:p-8 sm:p-4 p-2 rounded-[30px] w-[90%] max-w-md shadow-2xl">
@@ -97,14 +132,12 @@ const Signup = () => {
           <hr className="flex-1 border-gray-600" />
         </div>
 
-        <button className="w-full flex items-center gap-3 justify-center bg-white/10 border border-white/20 text-white rounded-full py-2 mb-3 hover:bg-white/20 transition">
+        <button
+          onClick={googleLogin}
+          className="w-full flex items-center gap-3 justify-center bg-white/10 border border-white/20 text-white rounded-full py-2 mb-3 hover:bg-white/20 transition"
+        >
           <FaGoogle />
           Continue with Google
-        </button>
-
-        <button className="w-full flex items-center gap-3 justify-center bg-white/10 border border-white/20 text-white rounded-full py-2 hover:bg-white/20 transition">
-          <FaXTwitter />
-          Continue with X
         </button>
 
         <p className="text-gray-400 text-sm text-center mt-6">

@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 const Dashboard = () => {
+  const [loggedIn, setLoggedIn] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => {
     if (modalOpen) {
@@ -18,6 +19,18 @@ const Dashboard = () => {
       document.body.style.overflow = "auto";
     };
   }, [modalOpen]);
+  useEffect(() => {
+    fetch("http://localhost:3000/api/check-auth", {
+      method: "GET",
+      credentials: "include",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Auth check response:", data);
+        setLoggedIn(data.loggedIn);
+      })
+      .catch((err) => console.error("Auth check failed:", err));
+  }, []);
   return (
     <>
       <div className={`${modalOpen ? "blur-sm" : ""} transition duration-300`}>
@@ -49,10 +62,15 @@ const Dashboard = () => {
             <div className="w-full h-[19%] flex justify-center items-center">
               <div className="w-[90%] h-[80%] bg-[#252525] rounded-3xl flex gap-2 items-end">
                 <textarea
+                  disabled={!loggedIn}
                   placeholder="Ask..."
                   name="text"
                   id="text"
-                  className="w-[94%] h-full bg-[#252525] text-lg p-3 rounded-3xl focus:outline-none placeholder:text-gray-400 text-white resize-none"
+                  className={
+                    loggedIn
+                      ? "w-[94%] h-full bg-[#252525] text-lg p-3 rounded-3xl focus:outline-none placeholder:text-gray-400 text-white resize-none"
+                      : "w-[94%] h-full bg-[#252525] text-lg p-3 rounded-3xl focus:outline-none placeholder:text-gray-400 text-white resize-none cursor-not-allowed"
+                  }
                 ></textarea>
                 <button className="mb-3 text-white cursor-pointer">
                   <IoSend size={20} className="" />
@@ -60,12 +78,14 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <div
-            onClick={() => setModalOpen(true)}
-            className="group fixed top-20 lg:right-28 md:right-10 sm:right-2 right-0 bg-[#2f2f2f] p-3 rounded-full cursor-pointer"
-          >
-            <MdDelete className="text-white md:size-7 size-5" />
-          </div>
+          {loggedIn && (
+            <div
+              onClick={() => setModalOpen(true)}
+              className="group fixed top-20 lg:right-28 md:right-10 sm:right-2 right-0 bg-[#2f2f2f] p-3 rounded-full cursor-pointer"
+            >
+              <MdDelete className="text-white md:size-7 size-5" />
+            </div>
+          )}
         </div>
         {modalOpen && (
           <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-40">

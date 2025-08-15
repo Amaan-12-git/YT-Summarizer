@@ -1,5 +1,16 @@
 import mongoose from "mongoose";
-mongoose.connect("mongodb://localhost:27017/summarizer");
+import dotenv from "dotenv";
+dotenv.config();
+console.log("MONGO_URI:", process.env.MONGO_URI);
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB connected successfully");
+  })
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -9,7 +20,12 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: true,
+  },
+  name: {
+    type: String,
+  },
+  googleId: {
+    type: String,
   },
 });
 
