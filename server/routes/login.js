@@ -19,7 +19,9 @@ router.post("/", async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ error: "Invalid email or password" });
     }
-    const token = jwt.sign({ email }, "ncsdjkcbvsdj", { expiresIn: "1h" });
+    const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+      expiresIn: process.env.JWT_TIMEOUT,
+    });
     console.log("Token created:", token);
     res.cookie("token", token, {
       httpOnly: true,
