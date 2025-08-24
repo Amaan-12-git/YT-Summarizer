@@ -4,6 +4,7 @@ import { AiOutlineMenu, AiOutlineClose } from "react-icons/ai";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const Navbar = () => {
   const [nav, setNav] = useState(false);
@@ -31,12 +32,29 @@ const Navbar = () => {
     }).then(() => {
       setLoggedIn(false);
       navigate("/");
+      window.location.reload();
     });
   };
   return (
     <nav className="bg-black p-4">
       <div className="container md:mx-auto sm:mx-[3vw] mx-[1.5vw] flex justify-between items-center">
-        <h2 className="text-gray-200 text-2xl font-bold z-50">Project</h2>
+        <h2 className="z-50">
+          <Link to="/" className="no-underline">
+            <motion.span
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              whileHover={{
+                scale: 1.1,
+                color: "#3B82F6",
+                textShadow: "0px 0px 8px #3B82F6",
+              }}
+              className="text-gray-200 text-2xl font-bold cursor-pointer"
+            >
+              YT-Summarizer
+            </motion.span>
+          </Link>
+        </h2>
         <div className="hidden md:block space-x-4">
           <Link to="/" className="text-gray-300 hover:text-white">
             Home

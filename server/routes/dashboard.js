@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
+// Accept single chat at a time and return its result
 router.post("/", async (req, res) => {
   const { text } = req.body;
   const token = req.cookies.token;
@@ -21,7 +22,18 @@ router.post("/", async (req, res) => {
     chat.messages.push({ role: "user", content: text });
     await chat.save();
 
-    const aiReply = "This is a mock AI response";
+    const response = await fetch("http://127.0.0.1:5000/summarize", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ link: text }),
+      credentials: "include",
+    });
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || "Something went wrong");
+    }
+    const response_json = await response.json();
+    const aiReply = response_json.summary;
 
     chat.messages.push({ role: "server", content: aiReply });
     await chat.save();
@@ -29,10 +41,23 @@ router.post("/", async (req, res) => {
     return res.status(200).json({ reply: aiReply });
   } catch (err) {
     console.error("Error processing chat:", err);
-    return res.status(500).json({ error: "Internal Server Error" });
+
+    const errMsg = `${err.message || "Internal Server Error"}`;
+
+    // Save error as server reply
+    const { email } = jwt.verify(token, process.env.JWT_SECRET);
+    let chat = await Chat.findOne({ email });
+    if (chat) {
+      chat.messages.push({ role: "error", content: errMsg });
+      await chat.save();
+    }
+    return res
+      .status(500)
+      .json({ error: err.message || "Internal Server Error" });
   }
 });
 
+// Route works at reload, send all chat data.
 router.get("/chats", async (req, res) => {
   const token = req.cookies.token;
   if (!token) {
@@ -57,6 +82,7 @@ router.get("/chats", async (req, res) => {
   }
 });
 
+// Deleting all the chats.
 router.delete("/chats", async (req, res) => {
   const token = req.cookies.token;
   if (!token) {

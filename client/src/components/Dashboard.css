@@ -1,0 +1,259 @@
+/* Enhanced Dark Mode CSS for AI Chat Messages with Reduced Gaps */
+.ai {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    line-height: 1.5; /* Reduced from 1.65 */
+    font-size: 0.95rem;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #e0e0e0;
+}
+
+/* Headings with original colors preserved */
+.ai h1, .ai h2, .ai h3, .ai h4 {
+    margin-top: 1.2rem; /* Reduced from 1.8rem */
+    margin-bottom: 0.6rem; /* Reduced from 0.9rem */
+    font-weight: 600;
+    padding-bottom: 0.2rem; /* Reduced from 0.4rem */
+    border-bottom: 1px solid #3a3a3a;
+    color: #ffffff;
+}
+
+.ai h1 {
+    font-size: 1.6rem;
+    letter-spacing: -0.02em;
+}
+
+.ai h2 {
+    font-size: 1.4rem;
+    letter-spacing: -0.01em;
+}
+
+.ai h3 {
+    font-size: 1.2rem;
+}
+
+.ai h4 {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+/* Paragraphs */
+.ai p {
+    margin-bottom: 0.8rem; /* Reduced from 1.1rem */
+    line-height: 1.5; /* Reduced from 1.7 */
+    color: #e0e0e0;
+}
+
+/* Lists - preserving original colors */
+.ai ul, .ai ol {
+    margin-bottom: 0.8rem; /* Reduced from 1.2rem */
+    padding-left: 1.5rem; /* Reduced from 1.8rem */
+}
+
+.ai li {
+    margin-bottom: 0.3rem; /* Reduced from 0.5rem */
+    padding-left: 0.2rem; /* Reduced from 0.4rem */
+    color: #e0e0e0;
+}
+
+.ai ul {
+    list-style-type: disc;
+}
+
+.ai ol {
+    list-style-type: decimal;
+}
+
+/* Blockquotes */
+.ai blockquote {
+    border-left: 4px solid #6366f1;
+    padding: 0.8rem 1rem; /* Reduced from 1rem 1.2rem */
+    margin: 1rem 0; /* Reduced from 1.5rem 0 */
+    background: linear-gradient(90deg, #1e1e2a 0%, #252533 100%);
+    border-radius: 0 8px 8px 0;
+    font-style: italic;
+    color: #c0c0ff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2);
+}
+
+/* Code blocks */
+.ai code {
+    background: #1a1a25;
+    padding: 0.2em 0.4em;
+    border-radius: 5px;
+    font-family: 'Fira Code', 'Monaco', 'Cascadia Code', monospace;
+    font-size: 0.88em;
+    color: #e0e0ff;
+    border: 1px solid #2a2a3a;
+}
+
+.ai pre {
+    background: linear-gradient(145deg, #151520 0%, #1a1a28 100%);
+    padding: 1rem; /* Reduced from 1.2rem */
+    border-radius: 10px;
+    overflow-x: auto;
+    margin: 1rem 0; /* Reduced from 1.5rem 0 */
+    border: 1px solid #2f2f40;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.ai pre code {
+    background: transparent;
+    padding: 0;
+    border: none;
+    color: #d6deeb;
+    font-size: 0.9em;
+}
+
+/* Links */
+.ai a {
+    color: #818cf8;
+    text-decoration: none;
+    font-weight: 500;
+    border-bottom: 1px dotted #6366f1;
+    transition: all 0.2s ease;
+}
+
+.ai a:hover {
+    color: #a5b4fc;
+    border-bottom: 1px solid #6366f1;
+}
+
+/* Tables */
+.ai table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0; /* Reduced from 1.5rem 0 */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ai th, .ai td {
+    border: 1px solid #333344;
+    padding: 0.5rem; /* Reduced from 0.7rem */
+    text-align: left;
+    color: #e0e0e0;
+}
+
+.ai th {
+    background: linear-gradient(135deg, #2d2d42 0%, #3a3a55 100%);
+    font-weight: 600;
+    color: #e0e0ff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.ai tr:nth-child(even) {
+    background-color: #1e1e2a;
+}
+
+.ai tr:nth-child(odd) {
+    background-color: #252536;
+}
+
+.ai tr:hover {
+    background-color: #2a2a40;
+}
+
+/* Horizontal rule - significantly reduced gap */
+.ai hr {
+    border: none;
+    height: 1px; /* Reduced from 2px */
+    background: linear-gradient(90deg, transparent 0%, #6366f1 50%, transparent 100%);
+    margin: 1rem 0; /* Reduced from 2rem 0 */
+}
+
+/* Special classes for points and gist content to preserve original colors */
+.ai .key-points, 
+.ai .one-line-gist, 
+.ai .keypoints, 
+.ai .gist,
+.ai .points,
+.ai .takeaways {
+    color: #e0e0e0;
+    margin-bottom: 0.8rem; /* Reduced gap */
+}
+
+/* List items within key points sections */
+.ai .key-points li, 
+.ai .keypoints li,
+.ai .points li,
+.ai .takeaways li {
+    color: #e0e0e0;
+    margin-bottom: 0.3rem; /* Reduced gap */
+}
+
+/* Additional utility classes for your chat */
+.chat-bubble {
+    border-radius: 1.5rem;
+    padding: 1rem 1.2rem; /* Reduced from 1.2rem 1.4rem */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.user-bubble {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    color: white;
+    border-bottom-right-radius: 0.5rem;
+}
+
+.ai-bubble {
+    background: linear-gradient(145deg, #252536 0%, #1f1f2e 100%);
+    color: #e0e0e0;
+    border-bottom-left-radius: 0.5rem;
+    border: 1px solid #333344;
+}
+
+.message-container {
+    max-width: 85%;
+}
+
+@media (max-width: 768px) {
+    .message-container {
+        max-width: 95%;
+    }
+    
+    .ai h1 {
+        font-size: 1.4rem;
+    }
+    
+    .ai h2 {
+        font-size: 1.25rem;
+    }
+    
+    .ai h3 {
+        font-size: 1.1rem;
+    }
+    
+    .ai pre {
+        padding: 0.8rem; /* Reduced from 1rem */
+    }
+    
+    /* Further reduce gaps on mobile */
+    .ai h1, .ai h2, .ai h3, .ai h4 {
+        margin-top: 1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .ai p {
+        margin-bottom: 0.7rem;
+    }
+}
+
+/* Custom scrollbar for dark mode */
+.ai::-webkit-scrollbar {
+    width: 8px;
+}
+
+.ai::-webkit-scrollbar-track {
+    background: #1a1a25;
+    border-radius: 4px;
+}
+
+.ai::-webkit-scrollbar-thumb {
+    background: #6366f1;
+    border-radius: 4px;
+}
+
+.ai::-webkit-scrollbar-thumb:hover {
+    background: #818cf8;
+}

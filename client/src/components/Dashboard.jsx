@@ -5,12 +5,17 @@ import { MdDelete } from "react-icons/md";
 import { useState } from "react";
 import { useEffect } from "react";
 import { useRef } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import rehypeHighlight from "rehype-highlight";
+import "./Dashboard.css";
 
 const Dashboard = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const chatRef = useRef(null);
   useEffect(() => {
     if (modalOpen) {
@@ -63,6 +68,8 @@ const Dashboard = () => {
     e.preventDefault();
     if (!input.trim()) return;
     setMessages((prev) => [...prev, { role: "user", text: input }]);
+    setLoading(true);
+    setInput("");
     try {
       const res = await fetch("http://localhost:3000/dashboard", {
         method: "POST",
@@ -70,12 +77,25 @@ const Dashboard = () => {
         body: JSON.stringify({ text: input }),
         credentials: "include",
       });
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(
+          errorData.error || "Something went wrong. Please try again."
+        );
+      }
       const data = await res.json();
-      setMessages((prev) => [...prev, { role: "ai", text: data.reply }]);
+      setMessages((prev) => [...prev, { role: "server", text: data.reply }]);
     } catch (err) {
       console.error("Error sending message:", err);
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "error",
+          text: err.message || "Something went wrong. Please try again.",
+        },
+      ]);
     } finally {
-      setInput("");
+      setLoading(false);
     }
   };
 
@@ -111,22 +131,33 @@ const Dashboard = () => {
           </div>
         )}
         <div className="bg-[#121212] w-full h-full flex justify-center">
-          <div className="lg:w-[60%] sm:w-[80%] w-[83%] h-full flex flex-col justify-between items-center">
+          <div className="lg:w-[70%] sm:w-[80%] rounded-xl w-[83%] h-full flex flex-col justify-between items-center">
             <div
               ref={chatRef}
               style={{ scrollBehavior: "smooth" }}
-              className="w-full flex-1 p-4 overflow-y-auto flex flex-col gap-5 custom-scroll"
+              className="w-full rounded-xl flex-1 p-4 overflow-y-auto flex flex-col gap-5 custom-scroll"
             >
               {messages.map((msg, index) =>
                 msg.role === "user" ? (
                   <div key={index} className="w-full flex justify-end">
-                    <div className="user rounded-3xl bg-[#2f2f2f] max-w-[65%] h-fit p-4">
+                    <div className="user rounded-3xl bg-[#2f2f2f] max-w-[65%] h-fit p-4 break-words overflow-hidden whitespace-pre-wrap">
                       {msg.text}
+                    </div>
+                  </div>
+                ) : msg.role === "server" ? (
+                  <div key={index} className="w-full flex justify-start">
+                    <div className="ai rounded-3xl text-white w-[95%] h-fit p-4">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        rehypePlugins={[rehypeHighlight]}
+                      >
+                        {msg.text}
+                      </ReactMarkdown>
                     </div>
                   </div>
                 ) : (
                   <div key={index} className="w-full flex justify-start">
-                    <div className="ai rounded-3xl bg-[#2f2f2f] text-white w-[90%] h-fit p-4">
+                    <div className="rounded-3xl text-red-500 w-[95%] h-fit p-4">
                       {msg.text}
                     </div>
                   </div>
@@ -145,10 +176,12 @@ const Dashboard = () => {
                   onKeyDown={(e) => {
                     if (e.key === "Enter" && !e.shiftKey) {
                       e.preventDefault();
-                      handleSubmit(e);
+                      {
+                        !loading && handleSubmit(e);
+                      }
                     }
                   }}
-                  placeholder="Ask..."
+                  placeholder="Enter video URL…"
                   name="text"
                   id="text"
                   className={
@@ -159,9 +192,16 @@ const Dashboard = () => {
                 ></textarea>
                 <button
                   type="submit"
-                  className="mb-3 text-white cursor-pointer"
+                  disabled={loading || !loggedIn}
+                  className={`mb-3 text-white flex items-center justify-center ${
+                    loading ? "cursor-not-allowed opacity-50" : "cursor-pointer"
+                  }`}
                 >
-                  <IoSend size={20} className="" />
+                  {loading ? (
+                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                  ) : (
+                    <IoSend size={20} />
+                  )}
                 </button>
               </form>
             </div>
