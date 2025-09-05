@@ -26,9 +26,9 @@ const Hero = () => {
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight"
+          className="text-4xl md:text-6xl font-extrabold text-gray-200 mb-6 leading-tight"
         >
-          Welcome to <span className="text-blue-500">YT-Summarizer!</span>
+          Welcome to <span className="text-blue-400">YT-Summarizer!</span>
         </motion.h1>
 
         {/* Subtext Animation */}
@@ -36,12 +36,13 @@ const Hero = () => {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="text-lg md:text-xl text-gray-300 mb-8"
+          className="text-lg md:text-xl text-gray-400 mb-8"
         >
           Save time with YT-Summarizer — instantly transform long YouTube videos
-          into <span className="font-semibold text-white">clear summaries</span>
-          . Understand content faster in English, no matter the language. Get{" "}
-          <span className="font-semibold text-white">direct answers</span>{" "}
+          into{" "}
+          <span className="font-semibold text-gray-100">clear summaries</span>.
+          Understand content faster in English, no matter the language. Get{" "}
+          <span className="font-semibold text-gray-100">direct answers</span>{" "}
           without rewatching.
         </motion.p>
 
@@ -52,7 +53,7 @@ const Hero = () => {
           transition={{ duration: 0.6, delay: 0.6 }}
         >
           <Link to={loggedIn ? "/dashboard" : "/signup"}>
-            <button className="px-8 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold text-lg rounded-2xl shadow-lg hover:scale-105 hover:shadow-xl hover:from-blue-600 hover:to-blue-800 transition duration-300">
+            <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-blue-800 text-white font-semibold text-lg rounded-2xl shadow-lg hover:scale-105 hover:shadow-xl hover:from-blue-700 hover:to-blue-900 transition duration-300">
               {loggedIn ? "Go to Dashboard" : "Get Started"}
             </button>
           </Link>
