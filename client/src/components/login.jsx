@@ -27,7 +27,6 @@ const Login = () => {
       if (!res.ok) throw new Error("Failed to login");
       setErr(false);
       const result = await res.json();
-      console.log("Login successful:", result);
       navigate("/dashboard");
     } catch (error) {
       setErr(true);

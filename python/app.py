@@ -72,7 +72,6 @@ def get_video_id(youtube_url):
 def extract_transcript_details(youtube_video_url):
     try:
         video_id = get_video_id(youtube_video_url)
-        print(video_id)
         transcript = YouTubeTranscriptApi().fetch(video_id, languages=lang)
         transcript_joined = " ".join(snippet.text for snippet in transcript)
         return transcript_joined

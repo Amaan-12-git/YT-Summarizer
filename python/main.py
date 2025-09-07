@@ -3,6 +3,10 @@ from app import extract_transcript_details, generate_gemini_content, prompt
 
 app = Flask(__name__)
 
+@app.route("/", methods=["GET"])
+def home():
+    return "Welcome to the YouTube Video Summarizer API! Use the /summarize endpoint to get video summaries."
+
 @app.route("/summarize", methods=["POST"])
 def summarize_video():
     try:

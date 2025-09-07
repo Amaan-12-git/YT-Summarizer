@@ -25,12 +25,10 @@ router.post("/create", async (req, res) => {
       email,
       password: hash,
     });
-    console.log("User created:", created);
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, {
       expiresIn: process.env.JWT_TIMEOUT,
     });
-    console.log("Token created:", token);
 
     res.cookie("token", token, {
       httpOnly: true,

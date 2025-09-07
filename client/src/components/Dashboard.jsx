@@ -130,7 +130,7 @@ const Dashboard = () => {
             </div>
           </div>
         )}
-        <div className="bg-[#121212] w-full h-full flex justify-center">
+        <div className="bg-black w-full h-full flex justify-center">
           <div className="lg:w-[70%] sm:w-[80%] rounded-xl w-[83%] h-full flex flex-col justify-between items-center">
             <div
               ref={chatRef}

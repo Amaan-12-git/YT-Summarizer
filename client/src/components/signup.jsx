@@ -27,7 +27,6 @@ const Signup = () => {
       if (!res.ok) throw new Error("Failed to signup");
       setErr(false);
       const result = await res.json();
-      console.log("Signup successful:", result);
       navigate("/dashboard");
     } catch (error) {
       setErr(true);
